@@ -3,10 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Python Courses - Beginner</title>
+
     <link rel="icon" href="favicon.svg" />
     <link rel="stylesheet" href="styles.css" />
+
+    <style>
+        /* ==============================
+           Python Courses - Helper
+           ============================== */
+
+        #python-helper {
+            width: min(420px, calc(100% - 30px));
+            margin: 40px auto;
+            border: 1px solid #dcdcdc;
+            border-radius: 14px;
+            overflow: hidden;
+            background: #ffffff;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+            font-family: Arial, sans-serif;
+        }
+
+        #python-helper-header {
+            background: #3776ab;
+            color: white;
+            padding: 16px;
+        }
+
+        #python-helper-header h2 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        #python-helper-header p {
+            margin: 5px 0 0;
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        #python-helper-messages {
+            height: 330px;
+            overflow-y: auto;
+            padding: 15px;
+            background: #f7f7f7;
+        }
+
+        .helper-message {
+            margin: 9px 0;
+            padding: 10px 12px;
+            border-radius: 10px;
+            max-width: 85%;
+            line-height: 1.4;
+            white-space: pre-wrap;
+        }
+
+        .helper-user {
+            margin-left: auto;
+            background: #3776ab;
+            color: white;
+        }
+
+        .helper-bot {
+            margin-right: auto;
+            background: #e8e8e8;
+            color: #222;
+        }
+
+        #python-helper-input-area {
+            display: flex;
+            gap: 8px;
+            padding: 12px;
+            border-top: 1px solid #ddd;
+            background: white;
+        }
+
+        #python-helper-input {
+            flex: 1;
+            min-width: 0;
+            padding: 11px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        #python-helper-send {
+            border: none;
+            border-radius: 8px;
+            padding: 0 16px;
+            background: #3776ab;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        #python-helper-send:hover {
+            background: #2b5f8a;
+        }
+
+        #python-helper-send:disabled {
+            background: #999;
+            cursor: not-allowed;
+        }
+    </style>
 </head>
+
 <body>
 
     <h1>WELCOME TO PYTHON COURSES - BEGINNER</h1>
@@ -69,5 +170,190 @@
         Same thing here: 10 + 20 = 30
     </p>
 
+
+    <!-- =====================================
+         Python Courses - Helper
+         ===================================== -->
+
+    <section id="python-helper">
+
+        <div id="python-helper-header">
+            <h2>🐍 Python Courses - Helper</h2>
+            <p>Ask me questions about your Python course!</p>
+        </div>
+
+        <div id="python-helper-messages">
+            <div class="helper-message helper-bot">
+                Hi! 👋 I'm your Python Courses Helper.
+                Ask me anything about the Python lessons!
+            </div>
+        </div>
+
+        <div id="python-helper-input-area">
+            <input
+                id="python-helper-input"
+                type="text"
+                placeholder="Ask a Python question..."
+                autocomplete="off"
+            />
+
+            <button id="python-helper-send">
+                Send
+            </button>
+        </div>
+
+    </section>
+
+
+    <script>
+        const messages = document.getElementById("python-helper-messages");
+        const input = document.getElementById("python-helper-input");
+        const sendButton = document.getElementById("python-helper-send");
+
+        // Conversation history sent to your backend.
+        const conversation = [
+            {
+                role: "system",
+                content:
+                    "You are Python Courses - Helper, a friendly beginner-level Python tutor. " +
+                    "Help students understand the Python course shown on this website. " +
+                    "Explain concepts simply and give short examples when useful. " +
+                    "Focus primarily on beginner Python, math, variables, and Python basics."
+            }
+        ];
+
+
+        function addMessage(text, type) {
+            const message = document.createElement("div");
+
+            message.className =
+                "helper-message " +
+                (type === "user"
+                    ? "helper-user"
+                    : "helper-bot");
+
+            message.textContent = text;
+
+            messages.appendChild(message);
+
+            messages.scrollTop = messages.scrollHeight;
+
+            return message;
+        }
+
+
+        async function sendMessage() {
+
+            const text = input.value.trim();
+
+            if (!text) {
+                return;
+            }
+
+            input.value = "";
+
+            addMessage(text, "user");
+
+            conversation.push({
+                role: "user",
+                content: text
+            });
+
+            sendButton.disabled = true;
+            sendButton.textContent = "Thinking...";
+
+            const thinkingMessage = addMessage(
+                "Thinking...",
+                "bot"
+            );
+
+            try {
+
+                /*
+                 * IMPORTANT:
+                 * Your API key should NOT be placed here.
+                 *
+                 * This request goes to your own backend:
+                 *
+                 * POST /api/chat
+                 *
+                 * Your backend then calls OpenAI using
+                 * your secret API key.
+                 */
+
+                const response = await fetch("/api/chat", {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        messages: conversation
+                    })
+                });
+
+
+                if (!response.ok) {
+                    throw new Error(
+                        "Server returned " + response.status
+                    );
+                }
+
+
+                const data = await response.json();
+
+                thinkingMessage.remove();
+
+
+                const reply =
+                    data.reply ||
+                    "Sorry, I couldn't generate a response.";
+
+
+                addMessage(reply, "bot");
+
+
+                conversation.push({
+                    role: "assistant",
+                    content: reply
+                });
+
+            } catch (error) {
+
+                console.error(error);
+
+                thinkingMessage.textContent =
+                    "Sorry, something went wrong. Please try again.";
+
+            } finally {
+
+                sendButton.disabled = false;
+                sendButton.textContent = "Send";
+
+                input.focus();
+            }
+        }
+
+
+        sendButton.addEventListener(
+            "click",
+            sendMessage
+        );
+
+
+        input.addEventListener(
+            "keydown",
+            function(event) {
+
+                if (event.key === "Enter") {
+                    sendMessage();
+                }
+
+            }
+        );
+    </script>
+
 </body>
 </html>
+
