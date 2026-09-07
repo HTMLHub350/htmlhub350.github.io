@@ -10,5 +10,5 @@ JavaScript - Good bit (1.3/5, decent)
 
 Python - Decent (3.0/5, really decent: TK, Pygame, ...Not good at ursina at all)
 
-<a href="PYTHONCOURSES.html">Python Courses</a>
+<a href="pythoncourses.html">Python Courses</a>
 
