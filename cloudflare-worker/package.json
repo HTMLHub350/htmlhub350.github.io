@@ -1,0 +1,9 @@
+{
+    "name": "htmlhub-chat-proxy",
+    "version": "1.0.0",
+    "description": "Cloudflare Worker proxy for the HTMLHub350 chat widget",
+    "type": "module",
+    "scripts": {
+        "deploy": "wrangler deploy"
+    }
+}

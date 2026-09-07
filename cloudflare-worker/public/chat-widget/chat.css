@@ -1,0 +1,177 @@
+/*
+ * HTMLHub350 - Chat Widget Styles
+ * ===============================
+ * Dark theme to match styles.css.
+ */
+
+#htmlhub-chat-root {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ---------------- Floating button ---------------- */
+
+#htmlhub-chat-fab {
+    width: 60px;
+    height: 60px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #020617;
+    background: linear-gradient(135deg, #38bdf8, #60a5fa);
+    box-shadow: 0 6px 20px rgba(56, 189, 248, 0.4);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#htmlhub-chat-fab:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 26px rgba(56, 189, 248, 0.55);
+}
+
+/* ---------------- Panel ---------------- */
+
+#htmlhub-chat-panel {
+    position: fixed;
+    bottom: 92px;
+    right: 20px;
+    width: min(360px, calc(100vw - 40px));
+    height: 480px;
+    display: flex;
+    flex-direction: column;
+    background: #0f172a;
+    border: 1px solid #1e3a5f;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+#htmlhub-chat-panel[hidden] {
+    display: none;
+}
+
+/* ---------------- Header ---------------- */
+
+#htmlhub-chat-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    color: #f8fafc;
+    font-weight: bold;
+    background: linear-gradient(135deg, #0f172a, #172554);
+    border-bottom: 2px solid #38bdf8;
+}
+
+#htmlhub-chat-close {
+    border: none;
+    background: none;
+    color: #94a3b8;
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+#htmlhub-chat-close:hover {
+    color: #f8fafc;
+}
+
+/* ---------------- Messages ---------------- */
+
+#htmlhub-chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.htmlhub-chat-msg {
+    max-width: 82%;
+    padding: 9px 12px;
+    border-radius: 12px;
+    font-size: 0.92rem;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.htmlhub-chat-bot {
+    align-self: flex-start;
+    background: #1e293b;
+    color: #e2e8f0;
+    border-top-left-radius: 4px;
+}
+
+.htmlhub-chat-user {
+    align-self: flex-end;
+    background: linear-gradient(135deg, #38bdf8, #60a5fa);
+    color: #020617;
+    border-top-right-radius: 4px;
+}
+
+/* ---------------- Form ---------------- */
+
+#htmlhub-chat-form {
+    display: flex;
+    gap: 8px;
+    padding: 12px;
+    border-top: 1px solid #1e293b;
+}
+
+#htmlhub-chat-input {
+    flex: 1;
+    padding: 10px 12px;
+    border: 1px solid #1e3a5f;
+    border-radius: 10px;
+    background: #020617;
+    color: #f8fafc;
+    font-family: inherit;
+    font-size: 0.92rem;
+    outline: none;
+}
+
+#htmlhub-chat-input::placeholder {
+    color: #64748b;
+}
+
+#htmlhub-chat-input:focus {
+    border-color: #38bdf8;
+}
+
+#htmlhub-chat-send {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    color: #020617;
+    font-weight: bold;
+    background: linear-gradient(135deg, #38bdf8, #60a5fa);
+}
+
+#htmlhub-chat-send:disabled {
+    opacity: 0.6;
+    cursor: default;
+}
+
+/* ---------------- Responsive ---------------- */
+
+@media (max-width: 600px) {
+    #htmlhub-chat-panel {
+        width: calc(100vw - 30px);
+        height: 70vh;
+        right: 15px;
+        bottom: 85px;
+    }
+
+    #htmlhub-chat-fab {
+        width: 54px;
+        height: 54px;
+    }
+}
